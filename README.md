@@ -6,3 +6,8 @@
  实现Lucene对全站的检索功能，对检索出的博客标题和内容实现高亮显示；<br/>
  使用百度的Ueditor编辑器实现写博客功能，支持单图、多图上传，支持截图上传，支持代码高亮特性等。<br/>
 
+![image](https://github.com/chenxiaopan/blog/raw/master/screenshots/blog1.jpg)
+
+![image](https://github.com/chenxiaopan/blog/raw/master/screenshots/blog2.jpg)
+
+![image](https://github.com/chenxiaopan/blog/raw/master/screenshots/blog3.jpg)
