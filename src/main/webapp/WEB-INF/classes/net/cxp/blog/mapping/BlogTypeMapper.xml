@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.cxp.blog.dao.BlogTypeMapper" >
+  <resultMap id="BaseResultMap" type="net.cxp.blog.entity.BlogType" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="TYPENAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="ORDERNUM" property="orderNum" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TYPENAME, ORDERNUM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BLOGTYPE
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_BLOGTYPE
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="net.cxp.blog.entity.BlogType" >
+    insert into T_BLOGTYPE (ID, TYPENAME, ORDERNUM
+      )
+    values (#{id,jdbcType=DECIMAL}, #{typeName,jdbcType=VARCHAR}, #{orderNum,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.cxp.blog.entity.BlogType" >
+    insert into T_BLOGTYPE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="typeName != null" >
+        TYPENAME,
+      </if>
+      <if test="orderNum != null" >
+        ORDERNUM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="typeName != null" >
+        #{typename,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{ordernum,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.cxp.blog.entity.BlogType" >
+    update T_BLOGTYPE
+    <set >
+      <if test="typeName != null" >
+        TYPENAME = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        ORDERNUM = #{orderNum,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.cxp.blog.entity.BlogType" >
+    update T_BLOGTYPE
+    set TYPENAME = #{typeName,jdbcType=VARCHAR},
+      ORDERNUM = #{orderNum,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  
+  	<select id="findById" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT * FROM t_blogtype WHERE id=#{id}
+	</select>
+  
+</mapper>

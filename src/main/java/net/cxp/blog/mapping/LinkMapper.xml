@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.cxp.blog.dao.LinkMapper" >
+  <resultMap id="BaseResultMap" type="net.cxp.blog.entity.Link" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="LINKNAME" property="linkname" jdbcType="VARCHAR" />
+    <result column="LINKURL" property="linkurl" jdbcType="VARCHAR" />
+    <result column="ORDERNUM" property="ordernum" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LINKNAME, LINKURL, ORDERNUM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_LINK
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_LINK
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="net.cxp.blog.entity.Link" >
+    insert into T_LINK (ID, LINKNAME, LINKURL, 
+      ORDERNUM)
+    values (#{id,jdbcType=DECIMAL}, #{linkname,jdbcType=VARCHAR}, #{linkurl,jdbcType=VARCHAR}, 
+      #{ordernum,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="net.cxp.blog.entity.Link" >
+    insert into T_LINK
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="linkname != null" >
+        LINKNAME,
+      </if>
+      <if test="linkurl != null" >
+        LINKURL,
+      </if>
+      <if test="ordernum != null" >
+        ORDERNUM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="linkname != null" >
+        #{linkname,jdbcType=VARCHAR},
+      </if>
+      <if test="linkurl != null" >
+        #{linkurl,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.cxp.blog.entity.Link" >
+    update T_LINK
+    <set >
+      <if test="linkname != null" >
+        LINKNAME = #{linkname,jdbcType=VARCHAR},
+      </if>
+      <if test="linkurl != null" >
+        LINKURL = #{linkurl,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        ORDERNUM = #{ordernum,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.cxp.blog.entity.Link" >
+    update T_LINK
+    set LINKNAME = #{linkname,jdbcType=VARCHAR},
+      LINKURL = #{linkurl,jdbcType=VARCHAR},
+      ORDERNUM = #{ordernum,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

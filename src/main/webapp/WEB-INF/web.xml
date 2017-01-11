@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+   <display-name>Archetype Created Web Application</display-name>
+  <welcome-file-list>
+    <welcome-file>a.jsp</welcome-file>
+  </welcome-file-list>
+  
+      <!-- 加载log4j配置文件 -->
+    <context-param>
+      <param-name>log4jConfigLocation</param-name>
+      <param-value>classpath:log4j.properties</param-value>
+      <!-- <param-value>/WEB-INF/log4j.xml</param-value> -->
+    </context-param>
+    <listener>
+       <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+  
+  <!-- Spring和mybatis的配置文件 -->  
+  <context-param>  
+       <param-name>contextConfigLocation</param-name>  
+       <param-value>classpath:spring-mybatis.xml</param-value>  
+  </context-param>  
+    
+  <!-- 监听器初始化spring上下文 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+    <!-- 防止Spring内存溢出监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>  
+    </listener>  
+    
+  <!-- 添加获取博主信息的监听器 -->
+  <listener>
+  	<listener-class>net.cxp.blog.listener.InitBloggerData</listener-class>
+  </listener>
+  
+    <!-- 添加shiro过滤器 -->
+  <filter>
+    <filter-name>shiroFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    <init-param>
+    	<!-- 该值缺省为false，表示声明周期由SpringApplicationContext管理，设置为true表示ServletContainer管理 -->
+    	<param-name>targetFilterLifecycle</param-name>
+    	<param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>shiroFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+   <!-- 编码过滤器 -->
+  <filter>
+  	<filter-name>encodingFilter</filter-name>
+  	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  	<async-supported>true</async-supported>
+  	<init-param>
+  		<param-name>encoding</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param>
+  </filter>
+  <filter-mapping>
+  	<filter-name>encodingFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <!-- spring mvc里的前端控制器 -->
+    <display-name>Spring Web MVC Application</display-name>
+    <servlet>
+        <servlet-name>DispatcherServlet</servlet-name>
+            <servlet-class>
+                org.springframework.web.servlet.DispatcherServlet
+            </servlet-class>
+        <init-param>  
+            <param-name>contextConfigLocation</param-name>  
+            <param-value>classpath:spring-mvc.xml</param-value>  
+        </init-param>  
+        <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>  
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <!-- <url-pattern>/</url-pattern> -->
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+ 

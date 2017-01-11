@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.cxp.blog.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="net.cxp.blog.entity.Comment" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="USERIP" property="userIp" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="COMMENTDATE" property="commentDate" jdbcType="TIMESTAMP" />
+    <result column="STATE" property="state" jdbcType="DECIMAL" />
+    <association  column="blog_id" property="blog" select="net.cxp.blog.dao.BlogMapper.findById">
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USERIP, CONTENT, COMMENTDATE, STATE, BLOG_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_COMMENT
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteComment" parameterType="java.lang.Long" >
+    delete from T_COMMENT
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="net.cxp.blog.entity.Comment" >
+    insert into T_COMMENT (ID, USERIP, CONTENT, 
+      COMMENTDATE, STATE, BLOG_ID
+      )
+    values (#{id,jdbcType=DECIMAL}, #{userIp,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{commentDate,jdbcType=TIMESTAMP}, #{state,jdbcType=DECIMAL}, #{blogId,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.cxp.blog.entity.Comment" >
+    insert into T_COMMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userIp != null" >
+        USERIP,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+      <if test="commentDate != null" >
+        COMMENTDATE,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="blogId != null" >
+        BLOG_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="userIp != null" >
+        #{userip,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="commentdate != null" >
+        #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="blogId != null" >
+        #{blogId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.cxp.blog.entity.Comment" >
+    update T_COMMENT
+    <set >
+      <if test="userIp != null" >
+        USERIP = #{userIp,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="commentdate != null" >
+        COMMENTDATE = #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="blogId != null" >
+        BLOG_ID = #{blogId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.cxp.blog.entity.Comment" >
+    update T_COMMENT
+    set USERIP = #{userIp,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      COMMENTDATE = #{commentDate,jdbcType=TIMESTAMP},
+      STATE = #{state,jdbcType=DECIMAL},
+      BLOG_ID = #{blogId,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="getTotal" resultType="java.lang.Long">
+   select count(1) from t_comment
+  </select>
+  
+  <select id="getCommentData" parameterType="Map" resultMap="BaseResultMap">
+  select ee.* from
+  (select e.*,rownum r from
+    (select * from t_comment 
+    <where>
+    <if test="blogId!=null and blogId!=''">
+      blog_id=#{blogId}
+    </if>
+    </where> order by id) e
+    <where>
+     <if test="page!=null and pageSize!=null">
+        rownum &lt;=#{page}*#{pageSize}
+     </if>
+    </where>) ee
+     <where>
+     <if test="start!=null">
+        r &gt; #{start}
+     </if>
+    </where>
+  </select>
+  
+  <insert id="addComment" parameterType="net.cxp.blog.entity.Comment">
+    insert into t_comment values(seq_t5.nextval,#{userIp},#{content},sysdate,0,#{blog.id})
+  </insert>
+  
+  <update id="update" parameterType="net.cxp.blog.entity.Comment">
+     update t_comment 
+     <set>
+     <if test="content!=null">
+     content=#{content}
+     </if>
+     <if test="state!=null">
+     state=#{state}
+     </if>
+     </set>
+      where id=#{id}
+  </update>
+  
+  <select id="deleteCommentByBlogId" parameterType="java.lang.Integer">
+       delete t_comment where blog_id=#{id}
+  </select> 
+  
+</mapper>

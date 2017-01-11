@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.cxp.blog.dao.BloggerMapper" >
+  <resultMap id="BaseResultMap" type="net.cxp.blog.entity.Blogger" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="PROFILE" property="profile" jdbcType="VARCHAR" />
+    <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
+    <result column="SIGN" property="sign" jdbcType="VARCHAR" />
+    <result column="IMAGENAME" property="imagename" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USERNAME, PASSWORD, PROFILE, NICKNAME, SIGN, IMAGENAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BLOGGER
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from T_BLOGGER
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="net.cxp.blog.entity.Blogger" >
+    insert into T_BLOGGER (ID, USERNAME, PASSWORD, 
+      PROFILE, NICKNAME, SIGN, 
+      IMAGENAME)
+    values (#{id,jdbcType=DECIMAL}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{profile,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{sign,jdbcType=VARCHAR}, 
+      #{imagename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.cxp.blog.entity.Blogger" >
+    insert into T_BLOGGER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="username != null" >
+        USERNAME,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="profile != null" >
+        PROFILE,
+      </if>
+      <if test="nickname != null" >
+        NICKNAME,
+      </if>
+      <if test="sign != null" >
+        SIGN,
+      </if>
+      <if test="imagename != null" >
+        IMAGENAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null" >
+        #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="imagename != null" >
+        #{imagename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateBlogger" parameterType="net.cxp.blog.entity.Blogger" >
+    update T_BLOGGER
+    <set >
+      <if test="username != null" >
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null" >
+        PROFILE = #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        NICKNAME = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        SIGN = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="imagename != null" >
+        IMAGENAME = #{imagename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.cxp.blog.entity.Blogger" >
+    update T_BLOGGER
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      PROFILE = #{profile,jdbcType=VARCHAR},
+      NICKNAME = #{nickname,jdbcType=VARCHAR},
+      SIGN = #{sign,jdbcType=VARCHAR},
+      IMAGENAME = #{imagename,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  	<select id="getBloggerData" resultMap="BaseResultMap">
+		SELECT * FROM t_blogger WHERE id=1001
+	</select>
+	
+	<select id="getByUsername" resultMap="BaseResultMap">
+          select * from t_blogger where username=#{username}	
+	</select>
+</mapper>
